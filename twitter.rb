@@ -4,12 +4,15 @@ require "google_drive"
 @session = GoogleDrive::Session.from_config("google_drive_config.json")
 
 #Config
+#twitter_username: Your Twitter username
+#twitter_password: Your Twitter password
+#spreadsheet_key: The key of your Google sheet
+#get_followers_of: The url of the account you want to get the followers/following of i.e https://www.twitter.com/tomiwaadey
 @config = {
 	twitter_username: '',
 	twitter_password: '',
 	spreadsheet_key: '',
-	get_followers_of: '',
-	search_term: ''
+	get_followers_of: ''
 }
 
 #Spread Sheet Column setting
@@ -66,7 +69,7 @@ def initialize_from_gsheet
 end
 
 #Add the followers of a user to a google sheet
-def add_twitter_friend_list_to_gsheet
+def add_twitter_friend_list_to_gsheet(relationship)
   browser = login
 	sleep 5
   browser.goto(@config[:get_followers_of] + "/followers")
@@ -167,6 +170,7 @@ end
 
 #initialize_from_gsheet
 #cleanup_scrape_similar_data
-#add_twitter_friend_list_to_gsheet
+#add_twitter_friend_list_to_gsheet('followers')
+#add_twitter_friend_list_to_gsheet('following')
 #relationship('follow')
 #relationship('unfollow')
