@@ -84,7 +84,7 @@ def add_twitter_friend_list_to_gsheet
   end
 end
 
-#Gets the first snd last name, website, following_count, and follower_count of the twitter user
+#Gets the full name, website, following_count, and follower_count of the twitter user
 def get_twitter_info(row, profile_url)
 	browser = Watir::Browser.new :phantomjs
   browser.driver.manage.window.maximize
@@ -122,8 +122,7 @@ end
 #adds the user details back to the google sheet
 def add_info_to_gsheet(row, profile_url, name, website, following_count, follower_count)
 	@ws[row, Column::TWITTER_URL] = profile_url
-  @ws[row, Column::FULL_NAME] = first_name
-  @ws[row, Column::LAST_NAME] = last_name
+  @ws[row, Column::FULL_NAME] = name
   @ws[row, Column::WEBSITE] = website
   @ws[row, Column::FOLLOWING_COUNT] = following_count.gsub('.','')
   @ws[row, Column::FOLLOWER_COUNT] = follower_count.gsub('.','')
