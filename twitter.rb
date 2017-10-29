@@ -21,6 +21,9 @@ require "google_drive"
 #COLUMN 3 - WEBSITE
 #COLUMN 4 - FOLLOWING_COUNT
 #COLUMN 5 - FOLLOWER_COUNT
+#COLUMN 6 - BIO
+#COLUMN 7 - STATUS_COUNT
+#COLUMN 8 - RELATIONSHIP
 
 #Define your columns by their number
 module Column
@@ -29,7 +32,9 @@ module Column
   WEBSITE = 3
   FOLLOWING_COUNT = 4
   FOLLOWER_COUNT = 5
-	RELATIONSHIP = 6
+	BIO = 6
+	STATUS_COUNT = 7
+	RELATIONSHIP = 8
 end
 
 @ws = @session.spreadsheet_by_key(@config[:spreadsheet_key]).worksheets[0]
@@ -97,8 +102,10 @@ def get_twitter_info(row, profile_url)
   website = with_error_handling {get_website(browser)}
   following_count = with_error_handling {get_following(browser)}
   follower_count = with_error_handling {get_followers(browser)}
+  bio = with_error_handling {get_bio(browser)}
+  status_count = with_error_handling {get_status_count(browser)}
 
-  add_info_to_gsheet(row, profile_url, name, website, following_count, follower_count)
+  add_info_to_gsheet(row, profile_url, name, website, following_count, follower_count, bio, status_count)
 	sleep 10
 end
 
@@ -122,13 +129,25 @@ def get_followers(page)
   return (follower_element .present?)? follower_element.text : ' '
 end
 
+def get_bio(page)
+  bio_element = twitter_profile_page.element(:xpath => '//*[@id="page-container"]/div[2]/div/div/div[1]/div/div/div/div[1]/p')
+  return (bio_element.present?)? bio_element.text : ' '
+end
+
+def get_status_count(page)
+  status_count_element = twitter_profile_page.element(:xpath => '//*[@id="page-container"]/div[1]/div/div[2]/div/div/div[2]/div/div/ul/li[1]/a/span[3]')
+  return (status_count_element.present?)? status_count_element.text : ' '
+end
+
 #adds the user details back to the google sheet
-def add_info_to_gsheet(row, profile_url, name, website, following_count, follower_count)
+def add_info_to_gsheet(row, profile_url, name, website, following_count, follower_count, bio, status_count)
 	@ws[row, Column::TWITTER_URL] = profile_url
   @ws[row, Column::FULL_NAME] = name
   @ws[row, Column::WEBSITE] = website
   @ws[row, Column::FOLLOWING_COUNT] = following_count.gsub('.','')
   @ws[row, Column::FOLLOWER_COUNT] = follower_count.gsub('.','')
+	@ws[row, Column::BIO] = bio
+	@ws[row, Column::STATUS_COUNT] = status_count
   @ws.save
 end
 
