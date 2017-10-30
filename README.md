@@ -65,3 +65,6 @@
  1. If you're on Windows enter: `cd \Desktop\bots`
  1. If you're on Mac enter: `cd Desktop/bots`
 1. Run the script by running: `ruby twitter.rb &`
+
+
+## ​Want to learn how to write scripts like this yourself? [Take my free email course](https://www.scrappycabin.com/first-steps)
