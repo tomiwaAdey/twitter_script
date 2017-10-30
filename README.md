@@ -1,3 +1,4 @@
+The Playbook: https://docs.google.com/document/d/1VC6mFMOsGqmf6EXV6eZjzEdp19yinLL_eVHj5Q2hWBA/edit?usp=sharing
 # Installing this script
 * Install Ruby
   * If you're on Mac, you will already have Ruby pre-installed on your machine.
